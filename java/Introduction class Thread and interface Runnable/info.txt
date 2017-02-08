@@ -1,0 +1,10 @@
+Folder includes some introductory examples to show the usage of Threads in Java.
+
+The class ABCThread inherits from the class Thread. This is done with the keyword extends. Please note, that we are overwriting the method run(), which we inherit from our super class Thread.
+The class SomeThreads shows how objects of the class ABCThread can be used. Please note, that we are calling the method start(), which is inherited by ABCThread from its super class Thread.
+
+The class ABCPrinter is not using threads. It is included to show the differences between concurrent and sequential execution of program code.
+The class SomePrinters shows how objects of the class ABCPrinter can be used. The main routine looks very similar to the main routine of someThreads, but the output will is different from the output of SomeThreads.
+
+The class ABCRunnable implements the interface Runnable.
+The class SomeRunnabel shows the usage of ABCRunnable. Please note, that first we are defining two objects r1 and r2 of the class ABCRunnable. The objects r1 and r2 are passed as arguments to the constructor to create two Thread objects t1 and t2. Afterwards t1 and t2 are started.

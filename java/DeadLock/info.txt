@@ -1,0 +1,20 @@
+In this example we want to see, how a deadlock can occur.
+
+Please find below some files for doing money transfer between to bank accounts. Run the example several times. You should always find at end on both account 0 zl.
+
+Please modify the code and synchronize the money transfer.
+
+You can synchronize two objects a and b with
+
+synchronized(A) {
+
+     synchronized(B) {
+
+           /* do something */
+
+     }
+
+}
+
+Hint: In the case of a deadlock, you have to end the console (in other words: kill the Java Virtual Machine (JVM))
+In eclipse you kill the JVM by a click on the red monitor in the Console tab.

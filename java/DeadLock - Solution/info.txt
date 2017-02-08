@@ -1,0 +1,5 @@
+Bank 2 uses MoneyTransfer2.
+
+We have included some waiting time between the two synchronized commands. It will produce a Deadlock.
+
+A solution to this problem can be found in MoneyTransfer3.

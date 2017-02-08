@@ -1,0 +1,20 @@
+Here are some examples showing the producer-consumer problem.
+
+The different examples work with different classes, which are all derived from the abstract class Value.
+An Object of the class Producer is producing some values by using the method put(...). The Consumer is consuming the values by using the method get().
+
+Producer and Consumer are extending the class Thread.
+
+In PCTest1 the producer and consumer are using an object of the class BadValue. The class BadValue uses the keyword synchronized in the methods put and get. But this is not enough to synchronize the production and consummation of the values. The same value can be produced and consumed several times.
+
+In PCTest2 the producer and consumer are using an object of the class GoodValue. The class GoodValue uses notify() and wait() to communicate between different threads. Now each value is produced and consumed exactly one time. However, the class GoodValue runs in some problems, if more than one producer or consumer is running. This problem will be explored in PCTest4 and PCTest5.
+
+In PCTest3 the producer and consumer are using an object of the class DeadValue. Producer and consumer are blocking each other. We have a deadlock.
+
+In PCTest4 we have 3 producers and 3 consumer. All are using the same object of the class GoodValue. If everything would go fine, each value (0, 1, ..., 4) is produced 3 times and consumed 3 times. However, if you run the code several times, you will see a different outcome each time.
+
+In PCTest5 we have 3 producers and 3 consumer as in PCTest4. This time all producers and consumers are using the an object of the class BetterValue.
+
+Your task to implement such the class. This class should make sure, that each value (0, 1, ..., 4) is produced and consumed exactly three times.
+
+If you finished with this task, rewrite the code and use the interface Runnable instead of the class Thread. For this task write new the classes ProducerRunnable and ConsumerRunnable, which implement the interface Runnable. Write a new class PCTest6, which starts 3 Threads with ProducerRunnable objects and 3 Threads with ConsumerRunnable objects. 

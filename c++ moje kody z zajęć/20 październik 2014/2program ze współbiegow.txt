@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <pthread.h>
+
+int work(int start, int stop, int extra)
+{ 
+	int partialSum = 0;
+	int i;
+	for(i = start; i < stop; i++) 
+	{
+		partialSum += i + extra;
+	}
+  	return partialSum;
+}
+
+int main(int argc,char *argv[])
+{ 
+	int i;
+	int resultA1, resultA2, resultB1, resultB2;
+
+	resultA1 = work(0,500,0);
+	resultA2 = work(0,500,1);
+	resultB1 = work(500,1000,0);
+	resultB2 = work(500,1000,1);  
+
+	if( (resultA1+resultB2) == (resultA2+resultB1))
+		printf("Correct Result!\n");
+	else printf("Wrong Result!\n");
+	system("pause");
+	return 0;
+}
+
+
+
+// parallelize the code using threads
+
+//czêœciowo rozwi¹zane
+
+#include <stdio.h>
+#include <pthread.h>
+#define NUM_THREADS	4
+
+typedef struct {
+	int start;
+	int stop;
+	int extra1;
+	int result;
+} mystruct_t;
+
+
+
+int work(int start, int stop, int extra)
+{ 
+	int partialSum = 0;
+	int i;
+	for(i = start; i < stop; i++) 
+	{
+		partialSum += i + extra;
+	}
+  	return partialSum;
+}
+
+void* threadwork(void* mydata)
+{
+      mystruct_t* d;
+      d = (mystruct_t*) mydata;
+      int a = d->start;
+      int b = d->stop;
+      int extra = d->extra1;
+      d->result = work(a,b,extra);
+      return NULL;
+}
+
+int main(int argc,char *argv[])
+{ 
+	int i;
+	int resultA1, resultA2, resultB1, resultB2;
+
+	resultA1 = work(0,500,0);
+	resultA2 = work(0,500,1);
+	resultB1 = work(500,1000,0);
+	resultB2 = work(500,1000,1);  
+
+	if( (resultA1+resultB2) == (resultA2+resultB1))
+		printf("Correct Result!\n");
+	else printf("Wrong Result!\n");
+	system("pause");
+	return 0;
+}

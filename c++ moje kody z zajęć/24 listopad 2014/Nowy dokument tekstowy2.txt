@@ -1,0 +1,100 @@
+printABC.java:
+
+package program;
+
+public class printABC {
+
+	public static void main(String[] args) {
+		ABCPrinter p1 = new ABCPrinter();
+		ABCPrinter p2 = new ABCPrinter();
+		
+		p1.start();
+		p2.start();
+
+	}
+
+}
+
+//-------------------------------------------------------------------------
+belazy.java:
+
+package program;
+
+public class belazy {
+
+	public static void doNothingForOneSecond() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(200);
+		}
+		catch(InterruptedException e)
+		{
+		}
+
+	}
+
+}
+
+//--------------------------------------------------------------------------
+ABCPrinter.java:
+
+package program;
+
+public class ABCPrinter {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i = 'A'; i<='Z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+		}
+	public void start(){
+		run();
+
+	}
+
+}
+//----------------------------------------------------------------------------
+printABC.java(po zmianie):
+
+package program;
+
+public class printABC {
+
+	public static void main(String[] args) {
+		//ABCPrinter p1 = new ABCPrinter();
+		//ABCPrinter p2 = new ABCPrinter();
+		
+		ABCThread p3 = new ABCThread();
+		//ABCThread p4 = new ABCThread();
+		
+		//p1.start();
+		//p2.start();
+		p3.start();
+		//p4.start();
+
+	}
+
+}
+//-----------------------------------------------------------
+ABCThread.java:
+
+package program;
+
+public class ABCThread extends Thread {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i='a'; i<='z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+
+	}
+
+}
+//--------------------------------------------------------------

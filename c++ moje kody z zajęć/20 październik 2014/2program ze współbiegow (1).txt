@@ -1,0 +1,183 @@
+#include <stdio.h>
+#include <pthread.h>
+
+int work(int start, int stop, int extra)
+{ 
+	int partialSum = 0;
+	int i;
+	for(i = start; i < stop; i++) 
+	{
+		partialSum += i + extra;
+	}
+  	return partialSum;
+}
+
+int main(int argc,char *argv[])
+{ 
+	int i;
+	int resultA1, resultA2, resultB1, resultB2;
+
+	resultA1 = work(0,500,0);
+	resultA2 = work(0,500,1);
+	resultB1 = work(500,1000,0);
+	resultB2 = work(500,1000,1);  
+
+	if( (resultA1+resultB2) == (resultA2+resultB1))
+		printf("Correct Result!\n");
+	else printf("Wrong Result!\n");
+	system("pause");
+	return 0;
+}
+
+
+
+// parallelize the code using threads
+
+//czêœciowo rozwi¹zane
+
+#include <stdio.h>
+#include <pthread.h>
+#define NUM_THREADS	4
+
+typedef struct {
+	int start;
+	int stop;
+	int extra1;
+	int result;
+} mystruct_t;
+
+
+
+int work(int start, int stop, int extra)
+{ 
+	int partialSum = 0;
+	int i;
+	for(i = start; i < stop; i++) 
+	{
+		partialSum += i + extra;
+	}
+  	return partialSum;
+}
+
+void* threadwork(void* mydata)
+{
+      mystruct_t* d;
+      d = (mystruct_t*) mydata;
+      int a = d->start;
+      int b = d->stop;
+      int extra = d->extra1;
+      d->result = work(a,b,extra);
+      return NULL;
+}
+
+int main(int argc,char *argv[])
+{ 
+	int i;
+	int resultA1, resultA2, resultB1, resultB2;
+
+	resultA1 = work(0,500,0);
+	resultA2 = work(0,500,1);
+	resultB1 = work(500,1000,0);
+	resultB2 = work(500,1000,1);  
+
+	if( (resultA1+resultB2) == (resultA2+resultB1))
+		printf("Correct Result!\n");
+	else printf("Wrong Result!\n");
+	system("pause");
+	return 0;
+}
+
+//rozwi¹zanie franca
+
+
+#include <stdio.h>
+#include <pthread.h>
+
+
+typedef struct input_params {
+  int start;
+  int stop;
+  int extra;
+  int partial;
+} param_t;
+
+void* thrwork(void* myparams);
+
+
+int work(int start, int stop, int extra)
+{ 
+	int partialSum = 0;
+	int i;
+	for(i = start; i < stop; i++) 
+	{
+		partialSum += i + extra;
+	}
+  	return partialSum;
+}
+
+int main(int argc,char *argv[])
+{ 
+
+	int nthr = 4;
+	pthread_t thr[nthr];
+	param_t myParams[nthr];
+	int result[nthr];
+	
+/*	resultA1 = work(0,500,0); */
+
+	myParams[0].start = 0;
+	myParams[0].stop = 500;
+	myParams[0].extra = 0;
+	
+/*	resultA2 = work(0,500,1); */
+
+	myParams[1].start = 0;
+	myParams[1].stop = 500;
+	myParams[1].extra = 1;
+
+/*	resultB1 = work(500,1000,0); */
+
+	myParams[2].start = 500;
+	myParams[2].stop = 1000;
+	myParams[2].extra = 0;
+
+/*	resultB2 = work(500,1000,1); */  
+
+	myParams[3].start = 500;
+	myParams[3].stop = 1000;
+	myParams[3].extra = 1;
+	
+  
+/* create threads */  
+
+	int ithr = 0;
+  	for (ithr=0; ithr < nthr; ithr++) {
+		pthread_create(&thr[ithr], NULL, thrwork, (void*) &myParams[ithr]);  
+	}
+	
+/* join threads */
+
+	for (ithr=0; ithr < nthr; ithr++) {
+		pthread_join(thr[ithr], NULL );
+		result[ithr] = myParams[ithr].partial;
+	}
+
+  
+	if( (result[0]+result[3]) == (result[1]+result[2]))
+		printf("Correct Result!\n");
+	else printf("Wrong Result!\n");
+
+	return 0;
+}
+
+void* thrwork(void* myparams) 
+{
+	param_t* p = (param_t*) myparams;
+	int start = p->start;
+	int stop = p->stop;
+	int extra = p->extra;
+	
+	p->partial = work(start,stop,extra);;
+
+	return NULL;
+}

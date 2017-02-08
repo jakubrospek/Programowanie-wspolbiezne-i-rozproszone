@@ -1,0 +1,16 @@
+Here we discuss an example for a reader-writer problem.
+
+In the examples different banks are doing 30 money transfers. Please download the files and run the examples: Bank, Bank2 and Bank3.
+
+To which of the banks would you give your money?
+
+
+Some additional notes:
+
+In the file MoneyTransfer3.java you find the routine two versions of the method run(). Both are exactly the same - just the keyword synchronized is used in different ways:
+
+synchronized public void run () { /* do something */ }
+
+is a simplified way for writing:
+
+public void run () { synchronized(this) { /* do something */ } }

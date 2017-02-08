@@ -1,0 +1,76 @@
+TICKET SHOP
+
+concertData---
+
+package ticketshop;
+
+public class ConcertData {
+	private int seatNumber = 0;
+	synchronized int makeReservation(){
+		int n = seatNumber;
+		try{ // simulate request at data bank
+			Thread.sleep((int) (Math.random() * 100));
+		} catch(InterruptedException ie) {
+			
+		}
+		return seatNumber = n + 1;
+	}
+	
+	synchronized int cancelReservation(){
+		int n = seatNumber;
+		try{ // simulate request at data bank
+			Thread.sleep((int) (Math.random() * 100));
+		} catch(InterruptedException ie) {
+			
+		}
+		seatNumber = n - 1;
+		return n;
+	}
+
+}
+
+ticketTerminal----------
+
+package ticketshop;
+
+public class TicketTerminal extends Thread 
+{
+	private ConcertData data;
+	TicketTerminal(String name, ConcertData data){
+		super(name);
+		this.data = data;
+	}
+	
+	public void run(){
+		for (int i = 0; i < 5; i++){
+			int s = data.makeReservation();
+			System.out.println(getName() + " seat number " 
+			                             + s + " reserved.");
+		}
+		for (int i = 0; i < 5; i++){
+			int r = data.cancelReservation();
+			System.out.println(getName() + " seat number " 
+			                             + r + " is free.");
+	}
+
+}
+}
+
+useTerminals----------
+
+package ticketshop;
+
+public class UseTerminals {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		ConcertData data = new ConcertData();
+		TicketTerminal t1 = new TicketTerminal("Terminal 1 ", data);
+		TicketTerminal t2 = new TicketTerminal("Terminal 2 ", data);
+		
+		t1.start();
+		t2.start();
+
+	}
+
+}

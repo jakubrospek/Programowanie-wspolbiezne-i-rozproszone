@@ -1,0 +1,1 @@
+Here you find a simple example for summing 1/exp(i). Please modify the code, so that you start a number of threads and each thread is computing one element 1/exp(i).

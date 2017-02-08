@@ -1,0 +1,64 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_THREADS     5
+
+
+typedef struct message {
+        int input;
+        int output;
+} message_t;
+
+
+
+void* DzienDobry(void *myData)
+{
+        message_t* m;
+        m = (message_t*) myData;
+        int a;
+        int b;
+        a = m->input;
+        b = 2 * a;
+        m->output = b;
+        printf("In thread function! input: %d  output: %d\n", a,b);
+        return NULL;
+}
+
+int main(int argc, char *argv[])
+{
+        pthread_t threads[NUM_THREADS];
+        message_t myMessages[NUM_THREADS];
+        int i;
+
+
+        printf("Dzien Dobry, I am putting data in the messages\n");
+
+        for( i=0; i<NUM_THREADS; i++ ){
+                myMessages[i].input = i+1;
+                myMessages[i].output = 0;
+
+        }
+
+
+        for( i=0; i<NUM_THREADS; i++ ){
+                printf("In main: Dzien Dobry, I am creating thread %d\n", i);
+                pthread_create(&threads[i],
+                        NULL,
+                        DzienDobry,
+                        (void *) &myMessages[i]);
+        }
+
+
+        printf("Here is main again, Now I want to print the output data.\n");
+
+        for( i=0; i<NUM_THREADS; i++ ){
+                int a,b;
+                a = myMessages[i].input;
+                b = myMessages[i].output;
+                printf("In main! input: %d  output: %d\n", a,b);
+        }
+
+
+
+        return 0;
+}

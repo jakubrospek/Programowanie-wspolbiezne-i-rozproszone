@@ -1,0 +1,264 @@
+printABC.java:
+
+package program;
+
+public class printABC {
+
+	public static void main(String[] args) {
+		ABCPrinter p1 = new ABCPrinter();
+		ABCPrinter p2 = new ABCPrinter();
+		
+		p1.start();
+		p2.start();
+
+	}
+
+}
+
+//-------------------------------------------------------------------------
+belazy.java:
+
+package program;
+
+public class belazy {
+
+	public static void doNothingForOneSecond() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(200);
+		}
+		catch(InterruptedException e)
+		{
+		}
+
+	}
+
+}
+
+//--------------------------------------------------------------------------
+ABCPrinter.java:
+
+package program;
+
+public class ABCPrinter {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i = 'A'; i<='Z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+		}
+	public void start(){
+		run();
+
+	}
+
+}
+//----------------------------------------------------------------------------
+printABC.java(po zmianie):
+
+package program;
+
+public class printABC {
+
+	public static void main(String[] args) {
+		//ABCPrinter p1 = new ABCPrinter();
+		//ABCPrinter p2 = new ABCPrinter();
+		
+		ABCThread p3 = new ABCThread();
+		//ABCThread p4 = new ABCThread();
+		
+		//p1.start();
+		//p2.start();
+		p3.start();
+		//p4.start();
+
+	}
+
+}
+//-----------------------------------------------------------
+ABCThread.java:
+
+package program;
+
+public class ABCThread extends Thread {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i='a'; i<='z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+
+	}
+
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+Aktualizacja 1.12.2014:
+
+printABC.java:
+
+package projekt;
+
+public class printABC {
+
+	public static void main(String[] args) {
+		//ABCPrinter p1 = new ABCPrinter();
+		//ABCPrinter p2 = new ABCPrinter();
+		
+		//ABCRunnable r1 = new ABCRunnable();
+		ABCRunnable r2 = new ABCRunnable();
+		
+		//Thread t1 = new Thread(r1);
+		Thread t2 = new Thread(r2);
+		
+		//ABCThhread p3 = new ABCThread();
+		//ABCThread p4 = new ABCThread();
+		
+		//t1.start();
+		t2.start();
+		//p1.start();
+		//p2.start();
+		//p3.start();
+		//p4.start();
+
+	}
+
+}
+
+belazy.java:
+
+package projekt;
+
+public class belazy {
+
+	public static void doNothingForOneSecond() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(200);
+		}
+		catch(InterruptedException e)
+		{
+		}
+
+	}
+
+}
+
+ABCPrinter.java:
+
+package projekt;
+
+public class ABCPrinter {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i = 'A'; i<='Z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+		}
+	public void start(){
+		run();
+
+	}
+
+}
+
+ABCThread.java:
+
+package projekt;
+
+public class ABCThread extends Thread {
+
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i='a'; i<='z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+
+	}
+
+}
+
+ABCRunnable.java:
+
+package projekt;
+
+public class ABCRunnable implements Runnable {
+	public void run() {
+		// TODO Auto-generated method stub
+		for(char i='a'; i<='z'; i++)
+		{
+			System.out.print(i);
+			belazy.doNothingForOneSecond();
+		}
+
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------
+
+UseTerminals.java:
+
+package projekt;
+
+public class UseTerminals {
+	public static void main(String[] args){
+		ConcertData data = new ConcertData();
+		
+		TicketTerminal t1 = new TicketTerminal("Terminal 1",data);
+		TicketTerminal t2 = new TicketTerminal("Terminal 2", data);
+		
+		t1.start();
+		t2.start();
+	
+	}
+}
+
+ConcertData.java:
+
+package projekt;
+
+public class ConcertData {
+	private int seatNumber = 0;
+	synchronized int makeReservation(){
+	int n = seatNumber;
+	try{
+		Thread.sleep((int)(Math.random()*100));
+	}catch(InterruptedException ie){}
+	return seatNumber = n+1;
+	}
+
+}
+
+TicketTerminal.java:
+
+package projekt;
+
+public class TicketTerminal extends Thread {
+private ConcertData data;
+TicketTerminal(String name, ConcertData data){
+	super(name);
+	this.data = data;
+}
+public void run(){
+for(int i=0; i<200; i++){
+	int s = data.makeReservation();
+	System.out.println(getName()+" seat number" + s + " sold" );
+}
+}
+}
+
+
+
+
